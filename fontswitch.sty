@@ -1,0 +1,38 @@
+\NeedsTeXFormat{LaTeX2e}[2024/11/01]
+\ProvidesPackage{fontswitch}[2025/10/07 v0.1.0 Font Switch]
+\RequirePackage{xparse}
+
+% Save original commands for later restoration
+\NewCommandCopy{\originnewcommand}{\newcommand}
+\NewCommandCopy{\originNeedsTeXFormat}{\NeedsTeXFormat}
+\NewDocumentCommand\ignore{m}{}  % No-op command for suppressing errors
+
+% ============================================================================
+% \SetPageFontSize{size}
+%
+% Changes the base font size throughout the document to {size} points.
+%
+% This command works by directly loading the appropriate size file (e.g., 
+% size14.clo for 14pt). Since size files are designed for preamble loading,
+% we need to temporarily:
+%   1. Suppress \NeedsTeXFormat which checks for preamble execution
+%   2. Change \newcommand to \renewcommand to avoid duplicate definition errors
+%
+% IMPORTANT: This currently works only with 'extarticle' class due to the
+% specific structure of its size definition files.
+% ============================================================================
+\NewDocumentCommand\SetPageFontSize{m}{
+  % Temporarily override critical commands
+  \let\NeedsTeXFormat\ignore          % Suppress preamble check
+  \let\newcommand\renewcommand        % Allow redefining existing commands
+  
+  % Load the specified size configuration file
+  \makeatletter
+  \input{size#1.clo}
+  \makeatother
+  
+  % Restore original command behavior
+  \let\newcommand\originnewcommand
+  \let\NeedsTeXFormat\originNeedsTeXFormat
+}
+
