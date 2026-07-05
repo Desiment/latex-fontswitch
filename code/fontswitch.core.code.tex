@@ -1,0 +1,14 @@
+% code/fontswitch.core.code.tex - Runtime page font size switching
+\NewCommandCopy{\originnewcommand}{\newcommand}
+\NewCommandCopy{\originNeedsTeXFormat}{\NeedsTeXFormat}
+\NewDocumentCommand\ignore{m}{}
+
+\NewDocumentCommand\SetPageFontSize{m}{
+  \let\NeedsTeXFormat\ignore
+  \let\newcommand\renewcommand
+  \makeatletter
+  \input{size#1.clo}
+  \makeatother
+  \let\newcommand\originnewcommand
+  \let\NeedsTeXFormat\originNeedsTeXFormat
+}
