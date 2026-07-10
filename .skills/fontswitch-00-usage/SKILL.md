@@ -1,3 +1,13 @@
+---
+name: fontswitch-00-usage
+description: Use fontswitch commands to define and apply dynamic font size switches in LaTeX documents.
+license: MIT
+compatibility: opencode
+metadata:
+  package: fontswitch
+  topic: usage
+---
+
 # fontswitch: Usage
 
 ## When To Use
